@@ -13,20 +13,20 @@ repositories {
 
 jar {
     manifest {
-        attributes('Implementation-Title': 'ic4j-internetidentity',
+        attributes('Implementation-Title': 'ic4j-management',
                    'Implementation-Version': project.version)
     }
     
-    archiveBaseName = 'ic4j-internetidentity'
+    archiveBaseName = 'ic4j-management'
 }
 
 task fatJar(type: Jar) {
     manifest {
-        attributes('Implementation-Title': 'ic4j-internetidentity',
+        attributes('Implementation-Title': 'ic4j-management',
                    'Implementation-Version': project.version)
     }
     
-    archiveBaseName = 'ic4j-internetidentity-with-dependencies'
+    archiveBaseName = 'ic4j-management-with-dependencies'
     
     from { configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
