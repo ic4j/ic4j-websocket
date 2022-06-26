@@ -1,7 +1,13 @@
 ## IC4J Management Java Service 
 
-This library is a Java implementation of Dfinity Virtual Canister Management API. Internet Identity is an authentication service for the Internet Computer.
- The library communicates directly with Management Virtual canister. Developers can use this library in any Java application to create a new canister, delete canister, install, uninstall and reinstall WASM canister code, start and stop canister, update canister settings and add additional funds to canister.
+This library is a Java implementation of Dfinity Virtual Canister Management API. 
+ The library communicates directly with Management Virtual canister.
+ 
+ <a href="https://internetcomputer.org/docs/current/references/ic-interface-spec#ic-management-canister">
+https://internetcomputer.org/docs/current/references/ic-interface-spec#ic-management-canister
+</a>
+ 
+ Developers can use this library in any Java application to create a new canister, delete canister, install, uninstall and reinstall WASM canister code, start and stop canister, update canister settings and add additional funds to canister.
 
 To test Management Service locally, install local Internet Computer instance. Then just configure custom Java properties with management.location value pointing to the local instance and management.identity pointing to identity PEM file.
 
