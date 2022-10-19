@@ -34,11 +34,11 @@ public final class ManagementService {
 
 
 	public static ManagementService create(Agent agent) throws ManagementError {
-		return create(agent, Principal.managementCanister());
+		return create(agent, Principal.managementCanister(),Principal.managementCanister());
 	}
 
-	public static ManagementService create(Agent agent, Principal managementCanister) throws ManagementError {
-
+	public static ManagementService create(Agent agent, Principal managementCanister, Principal effectiveCanister) throws ManagementError {
+		
 		ManagementService managementService = new ManagementService();
 
 		managementService.managementCanister = managementCanister;
@@ -47,6 +47,7 @@ public final class ManagementService {
 
 		managementService.managementProxy = ProxyBuilder
 				.create(agent, managementService.managementCanister)
+				.effectiveCanisterId(effectiveCanister)
 				.getProxy(ManagementProxy.class);
 
 		return managementService;

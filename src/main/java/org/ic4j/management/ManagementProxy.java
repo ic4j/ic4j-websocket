@@ -18,7 +18,6 @@ package org.ic4j.management;
 
 import java.util.concurrent.CompletableFuture;
 
-import org.ic4j.agent.annotations.ResponseClass;
 import org.ic4j.agent.annotations.UPDATE;
 import org.ic4j.agent.annotations.Waiter;
 import org.ic4j.candid.annotations.Name;
@@ -28,7 +27,6 @@ public interface ManagementProxy {
 	@UPDATE
 	@Name("create_canister")
 	@Waiter(timeout = 300)
-	@ResponseClass(CreateCanisterResponse.class)
 	public CompletableFuture<CreateCanisterResponse> createCanister(CreateCanisterRequest createCanisterRequest);
 	
 	@UPDATE
@@ -59,7 +57,6 @@ public interface ManagementProxy {
 	@UPDATE
 	@Name("canister_status")
 	@Waiter(timeout = 30)
-	@ResponseClass(CanisterStatusResponse.class)
 	public CompletableFuture<CanisterStatusResponse> canisterStatus(CanisterStatusRequest canisterStatusRequest);	
 	
 	@UPDATE
@@ -82,7 +79,6 @@ public interface ManagementProxy {
 	@UPDATE
 	@Name("provisional_create_canister_with_cycles")
 	@Waiter(timeout = 300)
-	@ResponseClass(CreateCanisterResponse.class)
 	public CompletableFuture<CreateCanisterResponse> provisionalCreateCanisterWithCycles(ProvisionalCreateCanisterWithCyclesRequest provisionalCreateCanisterWithCyclesRequest);
 
 	@UPDATE

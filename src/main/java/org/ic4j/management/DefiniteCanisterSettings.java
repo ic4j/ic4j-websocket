@@ -26,7 +26,7 @@ import org.ic4j.types.Principal;
 public final class DefiniteCanisterSettings {
     @Name("controllers")
     @Field(Type.VEC)
-    public Principal controllers;	
+    public Principal[] controllers;	
     @Name("compute_allocation")
     @Field(Type.NAT)
     public BigInteger computeAllocation;	

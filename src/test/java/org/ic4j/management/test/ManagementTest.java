@@ -15,6 +15,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.ic4j.agent.Agent;
 import org.ic4j.agent.AgentBuilder;
+import org.ic4j.agent.AgentError;
 import org.ic4j.agent.ProxyBuilder;
 import org.ic4j.agent.ReplicaTransport;
 import org.ic4j.agent.http.ReplicaApacheHttpTransport;
@@ -67,9 +68,11 @@ public final class ManagementTest {
 			Agent agent = new AgentBuilder().transport(transport)
 					.identity(identity)
 					.build();
+			
+			agent.fetchRootKey();
 
-			ManagementService managementService = ManagementService.create(agent);
-					
+			ManagementService managementService = ManagementService.create(agent, Principal.managementCanister(),Principal.fromString("x5pps-pqaaa-aaaab-qadbq-cai"));				
+			
 			Principal canisterId = managementService.provisionalCreateCanisterWithCycles(Optional.empty(), Optional.empty()).get();
 
 			LOG.info(canisterId.toString());
@@ -80,7 +83,7 @@ public final class ManagementTest {
 			
 			managementService.installCode(canisterId, Mode.install, wasmModule, ArrayUtils.EMPTY_BYTE_ARRAY);
 			
-			CanisterStatusResponse canisterStatusResponse =  managementService.canisterStatus(canisterId).get();
+			CanisterStatusResponse canisterStatusResponse = managementService.canisterStatus(canisterId).get();
 			
 			LOG.info(canisterStatusResponse.status.name());			
 			
@@ -104,7 +107,12 @@ public final class ManagementTest {
 
 			managementService.deleteCanister(canisterId);			
 			
-		} catch (Exception e) {
+		}
+		catch (AgentError e) {
+			LOG.error(e.getLocalizedMessage(), e);
+			Assertions.fail(e.getMessage());
+		}		
+		catch (Exception e) {
 			LOG.error(e.getLocalizedMessage(), e);
 			Assertions.fail(e.getMessage());
 		}
