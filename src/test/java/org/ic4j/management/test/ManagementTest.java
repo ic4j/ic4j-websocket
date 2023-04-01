@@ -19,8 +19,8 @@ import org.ic4j.agent.AgentError;
 import org.ic4j.agent.ProxyBuilder;
 import org.ic4j.agent.ReplicaTransport;
 import org.ic4j.agent.http.ReplicaApacheHttpTransport;
-import org.ic4j.agent.identity.BasicIdentity;
 import org.ic4j.agent.identity.Identity;
+import org.ic4j.agent.identity.Secp256k1Identity;
 import org.ic4j.management.CanisterStatusResponse;
 import org.ic4j.management.ManagementService;
 import org.ic4j.management.Mode;
@@ -63,7 +63,9 @@ public final class ManagementTest {
 			
 			Reader sourceReader = new FileReader(managementIdentityFile);
 			
-			Identity identity = BasicIdentity.fromPEMFile(sourceReader);
+			
+			Identity identity = Secp256k1Identity.fromPEMFile(sourceReader);
+
 
 			Agent agent = new AgentBuilder().transport(transport)
 					.identity(identity)
