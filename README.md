@@ -1,13 +1,12 @@
 ## IC4J Management Java Service 
 
-This library is a Java implementation of Dfinity Virtual Canister Management API. 
- The library communicates directly with Management Virtual canister.
+This Java library is an implementation of Dfinity's Virtual Canister Management API and directly communicates with the Management Virtual Canister.
  
  <a href="https://internetcomputer.org/docs/current/references/ic-interface-spec#ic-management-canister">
 https://internetcomputer.org/docs/current/references/ic-interface-spec#ic-management-canister
 </a>
  
- Developers can use this library in any Java application to create a new canister, delete canister, install, uninstall and reinstall WASM canister code, start and stop canister, update canister settings and add additional funds to canister.
+Developers can utilize this library within any Java application to perform various operations, such as creating, deleting, starting, and stopping a canister, installing, uninstalling, and reinstalling WASM canister code, updating canister settings, and adding additional funds to a canister.
 
 To test Management Service locally, install local Internet Computer instance. Then just configure custom Java properties with management.location value pointing to the local instance and management.identity pointing to identity PEM file.
 
