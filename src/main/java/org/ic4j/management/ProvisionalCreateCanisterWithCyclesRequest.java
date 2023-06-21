@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.ic4j.candid.annotations.Field;
 import org.ic4j.candid.annotations.Name;
 import org.ic4j.candid.types.Type;
+import org.ic4j.types.Principal;
 
 public class ProvisionalCreateCanisterWithCyclesRequest {
     @Name("amount")
@@ -14,5 +15,9 @@ public class ProvisionalCreateCanisterWithCyclesRequest {
     
     @Name("settings")
     @Field(Type.RECORD)
-    public Optional<CanisterSettings> settings;	    
+    public Optional<CanisterSettings> settings;	   
+    
+    @Name("specified_id")
+    @Field(Type.PRINCIPAL)
+    public Optional<Principal> specifiedId;	    
 }

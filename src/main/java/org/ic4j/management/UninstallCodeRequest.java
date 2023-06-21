@@ -16,6 +16,9 @@
 
 package org.ic4j.management;
 
+import java.math.BigInteger;
+import java.util.Optional;
+
 import org.ic4j.candid.annotations.Field;
 import org.ic4j.candid.annotations.Name;
 import org.ic4j.candid.types.Type;
@@ -24,5 +27,8 @@ import org.ic4j.types.Principal;
 public final class UninstallCodeRequest {
     @Name("canister_id")
     @Field(Type.PRINCIPAL)
-    public Principal canisterId;		
+    public Principal canisterId;	
+    @Name("sender_canister_version")
+    @Field(Type.NAT)
+    public Optional<BigInteger> senderCanisterVersion;     
 }

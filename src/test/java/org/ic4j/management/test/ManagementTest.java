@@ -21,6 +21,7 @@ import org.ic4j.agent.ReplicaTransport;
 import org.ic4j.agent.http.ReplicaApacheHttpTransport;
 import org.ic4j.agent.identity.Identity;
 import org.ic4j.agent.identity.Secp256k1Identity;
+import org.ic4j.candid.parser.IDLArgs;
 import org.ic4j.management.CanisterStatusResponse;
 import org.ic4j.management.ManagementService;
 import org.ic4j.management.Mode;
@@ -35,6 +36,8 @@ public final class ManagementTest {
 
 	static String PROPERTIES_FILE_NAME = "application.properties";
 	protected static String WASM_FILE = "hello.wasm";	
+	
+	protected static String WASM_WITH_ARGS_FILE = "hello_with_args.wasm";	
 
 	static {
 		LOG = LoggerFactory.getLogger(ManagementTest.class);
@@ -79,11 +82,15 @@ public final class ManagementTest {
 
 			LOG.info(canisterId.toString());
 			
-			Path path = Paths.get(getClass().getClassLoader().getResource(WASM_FILE).getPath());
+			Path path = Paths.get(getClass().getClassLoader().getResource(WASM_WITH_ARGS_FILE).getPath());
 			
 			byte [] wasmModule = Files.readAllBytes(path);	
 			
-			managementService.installCode(canisterId, Mode.install, wasmModule, ArrayUtils.EMPTY_BYTE_ARRAY);
+			byte[] args = ArrayUtils.EMPTY_BYTE_ARRAY;
+			IDLArgs idlArgs = IDLArgs.fromIDL("(\"from IC4J\")");
+			args = idlArgs.toBytes();
+			
+			managementService.installCode(canisterId, Mode.install, wasmModule, args);
 			
 			CanisterStatusResponse canisterStatusResponse = managementService.canisterStatus(canisterId).get();
 			

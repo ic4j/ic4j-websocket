@@ -56,20 +56,20 @@ managementService.deleteCanister(canisterId);
 
 To add Java IC4J Management Service library to your Java project use Maven or Gradle import from Maven Central.
 
-<a href="https://search.maven.org/artifact/ic4j/ic4j-management/0.6.19.1/jar">
-https://search.maven.org/artifact/ic4j/ic4j-management/0.6.19.1/jar
+<a href="https://search.maven.org/artifact/ic4j/ic4j-management/0.6.19.3/jar">
+https://search.maven.org/artifact/ic4j/ic4j-management/0.6.19.3/jar
 </a>
 
 ```
 <dependency>
   <groupId>org.ic4j</groupId>
   <artifactId>ic4j-management</artifactId>
-  <version>0.6.19.1</version>
+  <version>0.6.19.3</version>
 </dependency>
 ```
 
 ```
-implementation 'org.ic4j:ic4j-management:0.6.19.1'
+implementation 'org.ic4j:ic4j-management:0.6.19.3'
 ```
 
 

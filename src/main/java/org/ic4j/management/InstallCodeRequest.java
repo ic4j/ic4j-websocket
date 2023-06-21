@@ -16,6 +16,9 @@
 
 package org.ic4j.management;
 
+import java.math.BigInteger;
+import java.util.Optional;
+
 import org.ic4j.candid.annotations.Field;
 import org.ic4j.candid.annotations.Name;
 import org.ic4j.candid.types.Type;
@@ -33,5 +36,9 @@ public final class InstallCodeRequest {
     public byte[] wasmModule;	
     @Name("arg")
     @Field(Type.NAT8)
-    public byte[] arg;       
+    public byte[] arg;  
+    @Name("sender_canister_version")
+    @Field(Type.NAT)
+    public Optional<BigInteger> senderCanisterVersion;     
+    
 }

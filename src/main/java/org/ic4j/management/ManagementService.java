@@ -52,12 +52,18 @@ public final class ManagementService {
 
 		return managementService;
 	}
-	 
+	
 	public CompletableFuture<Principal> createCanister(Optional<CanisterSettings> settings) {
+		return this.createCanister(settings, Optional.empty());
+	}
+
+	 
+	public CompletableFuture<Principal> createCanister(Optional<CanisterSettings> settings, Optional<BigInteger> senderCanisterVersion) {
 		CompletableFuture<Principal> response = new CompletableFuture<Principal>(); 
 		
 		CreateCanisterRequest createCanisterRequest = new CreateCanisterRequest();
 		createCanisterRequest.settings = settings;
+		createCanisterRequest.senderCanisterVersion = senderCanisterVersion;
 		managementProxy.createCanister(createCanisterRequest).whenComplete((createCanisterResponse, ex) -> {
 			if (ex == null) 
 				if (createCanisterResponse != null) 
@@ -73,14 +79,22 @@ public final class ManagementService {
 	}
 
 	public void updateSettings(Principal canisterId, CanisterSettings settings) {
+		this.updateSettings(canisterId, settings, Optional.empty());
+	}
+	
+	public void updateSettings(Principal canisterId, CanisterSettings settings, Optional<BigInteger> senderCanisterVersion) {
 		UpdateSettingsRequest updateSettingsRequest = new UpdateSettingsRequest();
 		updateSettingsRequest.canisterId = canisterId;
 		updateSettingsRequest.settings = settings;
+		updateSettingsRequest.senderCanisterVersion = senderCanisterVersion;
 		
 		managementProxy.updateSettings(updateSettingsRequest);
 	}
-	
+
 	public void installCode(Principal canisterId, Mode mode, byte[] wasmModule, byte[] arg) {
+		this.installCode(canisterId, mode, wasmModule, arg, Optional.empty());
+	}
+	public void installCode(Principal canisterId, Mode mode, byte[] wasmModule, byte[] arg, Optional<BigInteger> senderCanisterVersion) {
 		InstallCodeRequest installCodeRequest = new InstallCodeRequest();
 		installCodeRequest.canisterId = canisterId;
 		installCodeRequest.mode = mode;
@@ -88,12 +102,17 @@ public final class ManagementService {
 		installCodeRequest.arg = arg;
 		if(installCodeRequest.arg == null)
 			installCodeRequest.arg = ArrayUtils.EMPTY_BYTE_ARRAY;
+		installCodeRequest.senderCanisterVersion = senderCanisterVersion;
 		managementProxy.installCode(installCodeRequest);
 	}
-	
+
 	public void uninstallCode(Principal canisterId) {
+		this.uninstallCode(canisterId, Optional.empty());
+	}
+	public void uninstallCode(Principal canisterId, Optional<BigInteger> senderCanisterVersion) {
 		UninstallCodeRequest uninstallCodeRequest = new UninstallCodeRequest();
 		uninstallCodeRequest.canisterId = canisterId;
+		uninstallCodeRequest.senderCanisterVersion = senderCanisterVersion;
 		managementProxy.uninstallCode(uninstallCodeRequest);
 	}	
 
