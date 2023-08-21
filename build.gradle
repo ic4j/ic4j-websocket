@@ -13,20 +13,20 @@ repositories {
 
 jar {
     manifest {
-        attributes('Implementation-Title': 'ic4j-management',
+        attributes('Implementation-Title': 'ic4j-websocket',
                    'Implementation-Version': project.version)
     }
     
-    archiveBaseName = 'ic4j-management'
+    archiveBaseName = 'ic4j-websocket'
 }
 
 task fatJar(type: Jar) {
     manifest {
-        attributes('Implementation-Title': 'ic4j-management',
+        attributes('Implementation-Title': 'ic4j-websocket',
                    'Implementation-Version': project.version)
     }
     
-    archiveBaseName = 'ic4j-management-with-dependencies'
+    archiveBaseName = 'ic4j-websocket-with-dependencies'
     
     from { configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
@@ -37,8 +37,14 @@ test {
 }
 
 dependencies {
-	implementation group: 'org.ic4j', name: 'ic4j-agent', version: '0.6.19.3'
-	implementation group: 'org.ic4j', name: 'ic4j-candid', version: '0.6.19.3'			
+	implementation group: 'org.ic4j', name: 'ic4j-agent', version: '0.6.19.5'
+	implementation group: 'org.ic4j', name: 'ic4j-candid', version: '0.6.19.5'	
+	
+	// https://mvnrepository.com/artifact/javax.websocket/javax.websocket-client-api
+	implementation group: 'javax.websocket', name: 'javax.websocket-client-api', version: '1.1'
+	
+	// https://mvnrepository.com/artifact/org.glassfish.tyrus.bundles/tyrus-standalone-client
+	implementation group: 'org.glassfish.tyrus.bundles', name: 'tyrus-standalone-client', version: '1.20'
 	
 	implementation group: 'org.slf4j', name: 'slf4j-simple', version: '2.0.6'	
 	
