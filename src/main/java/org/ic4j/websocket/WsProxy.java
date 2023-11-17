@@ -16,17 +16,24 @@
 
 package org.ic4j.websocket;
 
-import java.lang.String;
-import org.ic4j.candid.annotations.Field;
+import java.util.concurrent.CompletableFuture;
+import org.ic4j.agent.annotations.Argument;
+import org.ic4j.candid.annotations.Modes;
 import org.ic4j.candid.annotations.Name;
+import org.ic4j.candid.types.Mode;
 import org.ic4j.candid.types.Type;
 
-public enum CanisterWsOpenResult {
-  Ok,
 
-  Err;
+public interface WsProxy {
 
-  @Name("Err")
-  @Field(Type.TEXT)
-  public String errValue;
+  @Name("ws_message")
+  @Modes(Mode.ONEWAY)
+  CompletableFuture<Void> wsMessage(
+      @Argument(Type.RECORD) CanisterWsMessageArguments arg);
+
+  @Name("ws_open")
+  @Modes(Mode.ONEWAY)
+  CompletableFuture<Void> wsOpen(
+      @Argument(Type.RECORD) CanisterWsOpenArguments arg);
+
 }

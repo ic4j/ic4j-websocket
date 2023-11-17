@@ -16,17 +16,11 @@
 
 package org.ic4j.websocket;
 
-import java.lang.String;
-import org.ic4j.candid.annotations.Field;
-import org.ic4j.candid.annotations.Name;
-import org.ic4j.candid.types.Type;
+import org.ic4j.agent.replicaapi.Envelope;
 
-public enum CanisterWsOpenResult {
-  Ok,
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-  Err;
-
-  @Name("Err")
-  @Field(Type.TEXT)
-  public String errValue;
+public class WsAgentRequestMessage<T> {
+	@JsonProperty("envelope")
+	Envelope<T> envelope;
 }

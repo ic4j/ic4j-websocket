@@ -16,17 +16,25 @@
 
 package org.ic4j.websocket;
 
-import java.lang.String;
 import org.ic4j.candid.annotations.Field;
 import org.ic4j.candid.annotations.Name;
 import org.ic4j.candid.types.Type;
 
-public enum CanisterWsOpenResult {
-  Ok,
+public enum WebsocketServiceMessageContent {
+	OpenMessage,
+	AckMessage,
+	KeepAliveMessage;
+	
+	@Name("OpenMessage")
+	@Field(Type.RECORD)
+	public CanisterOpenMessageContent openValue;
+	
+	@Name("AckMessage")
+	@Field(Type.RECORD)
+	public CanisterAckMessageContent ackValue;	
+	
+	@Name("KeepAliveMessage")
+	@Field(Type.RECORD)
+	public ClientKeepAliveMessageContent keepAliveValue;
 
-  Err;
-
-  @Name("Err")
-  @Field(Type.TEXT)
-  public String errValue;
 }

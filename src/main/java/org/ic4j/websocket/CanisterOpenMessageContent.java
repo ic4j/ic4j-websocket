@@ -16,17 +16,15 @@
 
 package org.ic4j.websocket;
 
-import java.lang.String;
 import org.ic4j.candid.annotations.Field;
 import org.ic4j.candid.annotations.Name;
 import org.ic4j.candid.types.Type;
 
-public enum CanisterWsOpenResult {
-  Ok,
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-  Err;
-
-  @Name("Err")
-  @Field(Type.TEXT)
-  public String errValue;
+public class CanisterOpenMessageContent {
+	  @JsonProperty("client_key")
+	  @Name("client_key")
+	  @Field(Type.RECORD)
+	  public ClientKey clientKey;
 }

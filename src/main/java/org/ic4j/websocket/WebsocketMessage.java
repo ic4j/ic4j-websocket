@@ -16,17 +16,36 @@
 
 package org.ic4j.websocket;
 
-import java.lang.String;
 import org.ic4j.candid.annotations.Field;
 import org.ic4j.candid.annotations.Name;
 import org.ic4j.candid.types.Type;
 
-public enum CanisterWsOpenResult {
-  Ok,
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-  Err;
+public class WebsocketMessage {
+	
+  @JsonProperty("sequence_num")
+  @Name("sequence_num")
+  @Field(Type.NAT64)  
+  public Long sequenceNum;
 
-  @Name("Err")
-  @Field(Type.TEXT)
-  public String errValue;
+  @JsonProperty("content")
+  @Name("content")
+  @Field(Type.NAT8)
+  public byte[] content;
+
+  @JsonProperty("client_key")
+  @Name("client_key")
+  @Field(Type.RECORD)
+  public ClientKey clientKey;
+
+  @JsonProperty("timestamp")
+  @Name("timestamp")
+  @Field(Type.NAT64)
+  public Long timestamp;
+
+  @JsonProperty("is_service_message")
+  @Name("is_service_message")
+  @Field(Type.BOOL)
+  public Boolean isServiceMessage;
 }

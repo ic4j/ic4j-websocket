@@ -16,17 +16,15 @@
 
 package org.ic4j.websocket;
 
-import java.lang.String;
 import org.ic4j.candid.annotations.Field;
 import org.ic4j.candid.annotations.Name;
 import org.ic4j.candid.types.Type;
 
-public enum CanisterWsOpenResult {
-  Ok,
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-  Err;
-
-  @Name("Err")
-  @Field(Type.TEXT)
-  public String errValue;
+public class ClientKeepAliveMessageContent {
+	  @JsonProperty("last_incoming_sequence_num")
+	  @Name("last_incoming_sequence_num")
+	  @Field(Type.NAT64)  
+	  public Long lastIncomingSequenceNum;
 }

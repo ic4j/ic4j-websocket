@@ -11,29 +11,20 @@ import java.security.Security;
 import java.util.Properties;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.ic4j.agent.Agent;
-import org.ic4j.agent.AgentBuilder;
 import org.ic4j.agent.ReplicaTransport;
 import org.ic4j.agent.http.ReplicaOkHttpTransport;
 import org.ic4j.agent.identity.BasicIdentity;
+import org.ic4j.candid.parser.IDLArgs;
+import org.ic4j.candid.pojo.PojoDeserializer;
 import org.ic4j.types.Principal;
 
 import org.ic4j.websocket.JavaxWebsocketTransport;
-import org.ic4j.websocket.Utils;
-import org.ic4j.websocket.WebsocketClient;
-import org.ic4j.websocket.WebsocketError;
+import org.ic4j.websocket.WsAgent;
 import org.ic4j.websocket.WebsocketTransport;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.dataformat.cbor.CBORFactory;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 
 public final class WebsocketTest {
 	static Logger LOG;
@@ -60,58 +51,40 @@ public final class WebsocketTest {
 
 			keyPair = KeyPairGenerator.getInstance("Ed25519").generateKeyPair();
 
-			byte[] publicKeyBytes = Utils.getPublicKeyBytes(keyPair);
-
 			BasicIdentity identity = BasicIdentity.fromKeyPair(keyPair);
 
-			ReplicaTransport transport = ReplicaOkHttpTransport.create(env.getProperty("ic.location"));
-
-			Agent agent = new AgentBuilder().transport(transport).identity(identity).build();
-
-			// open websocket
-			final WebsocketTransport wsTransport = new JavaxWebsocketTransport(new URI(env.getProperty("ws.location")));
-
-			WebsocketClient wsClient = new WebsocketClient(agent, Principal.fromString(env.getProperty("ic.canister")),
-					wsTransport, identity, publicKeyBytes).setLocal(Boolean.parseBoolean(env.getProperty("local","false")));
+			ReplicaTransport httpTransport = ReplicaOkHttpTransport.create(env.getProperty("ic.location"));
 			
-			wsClient
-			.addMessageHandler((output) -> {
-						try {
-							System.out.println(Agent.cborToJson(output));
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					})
-			.addMessageHandler((output) -> {
-						try {
-							Thread.sleep(1000);
-							ObjectMapper objectMapper = new ObjectMapper(new CBORFactory()).registerModule(new Jdk8Module());
-							ObjectNode jsonNode = objectMapper.createObjectNode();
-							jsonNode.put("text", "pong").put("timestamp", System.currentTimeMillis());
-							ObjectWriter objectWriter = objectMapper.writerFor(ObjectNode.class);
-							byte[] buf = null;
-							try {
-								buf = objectWriter.writeValueAsBytes(jsonNode);
-								wsClient.sendApplicationMessage(buf);
+			final WebsocketTransport wsTransport = new JavaxWebsocketTransport(new URI(env.getProperty("ws.location")), httpTransport);
+			
 
-							} catch (JsonProcessingException e) {
-									throw new WebsocketError(e);
-							}
+			WsAgent wsAgent = new WsAgent( Principal.fromString(env.getProperty("ic.canister")),
+					wsTransport, identity).setLocal(Boolean.parseBoolean(env.getProperty("local","false")));
+			
+			wsAgent
+			.addMessageHandler((output) -> {
+						try {
+							AppMessage result = IDLArgs.fromBytes(output).getArgs().get(0).getValue(new PojoDeserializer(), AppMessage.class);
+							LOG.info(result.message);
 							
-							System.out.println(Agent.cborToJson(output));
+							AppMessage response = new AppMessage();
+							
+							response.message = "Pong";
+							
+							byte[] payload = WsAgent.encodeValue(response);
+							
+							wsAgent.sendApplicationMessage(payload);
 						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							LOG.error(e.getLocalizedMessage(),e);
 						}
-					});
-					
+					});	
 
-			wsClient.start();
+			wsAgent.start();
 
-			// wait 5 seconds for messages from websocket
-			Thread.sleep(50000);
-
+			// wait 100 seconds for messages from websocket
+			Thread.sleep(1000000);
+			
+			wsAgent.close();
 		} catch (InterruptedException e) {
 			LOG.debug(e.getLocalizedMessage(), e);
 			Assertions.fail(e.getLocalizedMessage());
