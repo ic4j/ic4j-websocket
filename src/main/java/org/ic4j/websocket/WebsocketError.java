@@ -18,7 +18,7 @@ package org.ic4j.websocket;
 
 public class WebsocketError extends Error {
 
-	public WebsocketError(Exception e) {
+	public WebsocketError(Throwable e) {
 		super(e);
 	}
 
@@ -29,5 +29,6 @@ public class WebsocketError extends Error {
 	public WebsocketError(String message, Exception e) {
 		super(message,e);
 	}
+
 
 }

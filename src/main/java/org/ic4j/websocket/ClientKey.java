@@ -41,13 +41,12 @@ public class ClientKey {
   public BigInteger clientNonce;
   
   @JsonSetter("client_principal")
-  void setClientPrincipal(JsonNode clientPrincipaldNode) {
-		if (clientPrincipaldNode != null && clientPrincipaldNode.isBinary())
+  void setClientPrincipal(JsonNode clientPrincipalNode) {
+		if (clientPrincipalNode != null && clientPrincipalNode.isBinary())
 			try {
-				this.clientPrincipal = Principal.from(clientPrincipaldNode.binaryValue());
+				this.clientPrincipal = Principal.from(clientPrincipalNode.binaryValue());
 			} catch (PrincipalError | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new WebsocketError(e);
 			}
   }
 

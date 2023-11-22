@@ -65,11 +65,13 @@ public final class WebsocketTest {
 			.addMessageHandler((output) -> {
 						try {
 							AppMessage result = IDLArgs.fromBytes(output).getArgs().get(0).getValue(new PojoDeserializer(), AppMessage.class);
-							LOG.info(result.message);
+							LOG.info(result.text);
 							
 							AppMessage response = new AppMessage();
 							
-							response.message = "Pong";
+							response.text = "Pong";
+							
+							response.timestamp = System.currentTimeMillis();
 							
 							byte[] payload = WsAgent.encodeValue(response);
 							

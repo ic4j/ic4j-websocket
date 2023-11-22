@@ -19,9 +19,14 @@ package org.ic4j.websocket;
 import org.ic4j.candid.annotations.Field;
 import org.ic4j.candid.annotations.Name;
 import org.ic4j.candid.types.Type;
+import org.ic4j.types.Principal;
 
 public class CanisterWsOpenArguments {
   @Name("client_nonce")
   @Field(Type.NAT64)
   public Long clientNonce;
+  
+  @Name("gateway_principal")
+  @Field(Type.PRINCIPAL)  
+  public Principal gatewayPrincipal;
 }

@@ -5,8 +5,12 @@ import org.ic4j.candid.annotations.Name;
 import org.ic4j.candid.types.Type;
 
 public class AppMessage {
-	  @Name("message")
+	  @Name("text")
 	  @Field(Type.TEXT)
-	  public String message;
+	  public String text;
 	  
+	  
+	  @Name("timestamp")
+	  @Field(Type.NAT64)
+	  public Long timestamp;	  
 }

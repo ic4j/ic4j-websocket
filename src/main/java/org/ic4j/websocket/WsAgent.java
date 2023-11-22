@@ -70,7 +70,11 @@ public class WsAgent {
 	
 	ClientKey clientKey;
 	
+	Principal gatewayPrincipal;
+	
 	boolean isConnectionEstablished = false;
+	
+	boolean isHandshakeCompleted = false;
 
 	public WsAgent(Principal canisterId, WebsocketTransport transport, Identity identity) {
 		super();
@@ -96,8 +100,28 @@ public class WsAgent {
 	public WsAgent addMessageHandler(Consumer<byte[]> consumer) {
 
 		// add listener
-		transport.addMessageHandler(new WebsocketTransport.MessageHandler() {
+		this.transport.addMessageHandler(new WebsocketTransport.MessageHandler() {
 			public void handleMessage(byte[] bytes) throws WebsocketError {
+				if(!isHandshakeCompleted)
+				{
+					LOG.debug("Handshake is not completed");
+					
+					try {
+						GatewayHandshakeMessage gatewayHandshakeMessage = objectMapper.readValue(bytes, GatewayHandshakeMessage.class);
+						
+						isHandshakeCompleted = true;
+						
+						gatewayPrincipal = gatewayHandshakeMessage.gatewayPrincipal;					
+						
+						sendOpenMessage();
+						
+					}catch(Exception e)
+					{
+						LOG.error(e.getLocalizedMessage(), e);
+					}
+					
+					return;
+				}
 
 				try {
 					ClientIncomingMessage incomingMessage = objectMapper.readValue(bytes, ClientIncomingMessage.class);
@@ -136,7 +160,6 @@ public class WsAgent {
 
 				} catch (IOException e) {
 					LOG.error(e.getLocalizedMessage(), e);
-					//throw new WebsocketError(e);
 				}
 
 			}
@@ -150,9 +173,29 @@ public class WsAgent {
 		if (this.isLocal)
 			this.agent.fetchRootKey();
 		   
-		this.transport.open();
+		/*
+		this.transport.addMessageHandler(new WebsocketTransport.MessageHandler() {
+			public void handleMessage(byte[] bytes) throws WebsocketError {
+				if(isHandshakeCompleted)
+					return;
 
-		this.sendOpenMessage();
+				try {
+					GatewayHandshakeMessage gatewayHandshakeMessage = objectMapper.readValue(bytes, GatewayHandshakeMessage.class);
+					
+					isHandshakeCompleted = true;
+					
+					gatewayPrincipal = gatewayHandshakeMessage.gatewayPrincipal;					
+					
+					sendOpenMessage();
+					
+				}catch(Exception e)
+				{
+					LOG.error(e.getLocalizedMessage(), e);
+				}
+			}});
+			*/
+		
+		this.transport.open();
 
 	}
 	
@@ -215,6 +258,7 @@ public class WsAgent {
 		CanisterWsOpenArguments arg = new CanisterWsOpenArguments();
 
 		arg.clientNonce = this.clientKey.clientNonce.longValue();
+		arg.gatewayPrincipal = this.gatewayPrincipal;
 
 		try {
 			wsProxy.wsOpen(arg).get();
