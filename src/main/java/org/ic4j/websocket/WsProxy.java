@@ -35,5 +35,5 @@ public interface WsProxy {
   @Modes(Mode.ONEWAY)
   CompletableFuture<Void> wsOpen(
       @Argument(Type.RECORD) CanisterWsOpenArguments arg);
-
+  
 }
