@@ -38,7 +38,7 @@ public final class WebsocketTest {
 	@Test
 	public void test() {
 
-		KeyPair keyPair;
+		;
 
 		try {
 			Security.addProvider(new BouncyCastleProvider());
@@ -49,7 +49,7 @@ public final class WebsocketTest {
 			Properties env = new Properties();
 			env.load(propInputStream);
 
-			keyPair = KeyPairGenerator.getInstance("Ed25519").generateKeyPair();
+			KeyPair keyPair = KeyPairGenerator.getInstance("Ed25519").generateKeyPair();
 
 			BasicIdentity identity = BasicIdentity.fromKeyPair(keyPair);
 
@@ -84,7 +84,7 @@ public final class WebsocketTest {
 			wsAgent.start();
 
 			// wait 100 seconds for messages from websocket
-			Thread.sleep(1000000);
+			Thread.sleep(100000);
 			
 			wsAgent.close();
 		} catch (InterruptedException e) {

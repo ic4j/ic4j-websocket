@@ -67,7 +67,7 @@ public abstract class WebsocketTransport implements ReplicaTransport {
 	/**
 	 * Send a message.
 	 *
-	 * @param envelope Byte array
+	 * @param payload Byte array
 	 */
 	protected void send(byte[] payload) {
 		WsAgentRequestMessage<CallRequest> message = new WsAgentRequestMessage<CallRequest>();
