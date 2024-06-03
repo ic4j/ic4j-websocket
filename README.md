@@ -63,18 +63,18 @@ wsAgent.close();
 
 To add IC4J Websocket library to your Java project use Maven or Gradle import from Maven Central.
 
-<a href="https://search.maven.org/artifact/org.ic4j/ic4j-websocket/0.6.19.6/jar">
-https://search.maven.org/artifact/org.ic4j/ic4j-websocket/0.6.19.6/jar
+<a href="https://search.maven.org/artifact/org.ic4j/ic4j-websocket/0.7.0/jar">
+https://search.maven.org/artifact/org.ic4j/ic4j-websocket/0.7.0/jar
 </a>
 
 ```
 <dependency>
   <groupId>org.ic4j</groupId>
   <artifactId>ic4j-websocket</artifactId>
-  <version>0.6.19.6</version>
+  <version>0.7.0</version>
 </dependency>
 ```
 
 ```
-implementation 'org.ic4j:ic4j-websocket:0.6.19.6'
+implementation 'org.ic4j:ic4j-websocket:0.7.0'
 ```
